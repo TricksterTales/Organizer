@@ -1,0 +1,104 @@
+package com.trickstertales.main;
+
+import java.util.ArrayList;
+
+import com.trickstertales.types.Person;
+import com.trickstertales.utils.StringUtils;
+
+public class Main {
+
+	private MainGui gui;
+	private ArrayList<Person> people;
+	private ArrayList<Integer> peopleIds;
+	private int id = 0;
+
+	public static void main(String args[]) {
+		Main main = new Main();
+		main.start();
+	}
+
+	public Main() {
+		gui = new MainGui(this);
+		people = new ArrayList<Person>();
+		peopleIds = new ArrayList<Integer>();
+	}
+
+	public void start() {
+		gui.setVisible(true);
+		gui.start();
+	}
+
+	public void execute(String cmd) {
+		if (cmd == null || cmd.equals(""))
+			return;
+		String args[] = StringUtils.parseArguments(cmd);
+		if (args.length == 0)
+			return;
+
+		System.out.println("Executing: " + cmd);
+		Person person = new Person();
+
+		switch (args[0].toLowerCase()) {
+		case "print":
+			gui.println(args[1]);
+			break;
+		case "exit":
+			gui.dispose();
+			break;
+		case "create":
+			if (args.length < 2 || args.length > 4) {
+				wrongArgs();
+				return;
+			}
+			switch (args.length) {
+			case 2:
+				person = new Person(args[1].trim());
+				break;
+			case 3:
+				person = new Person(args[1].trim(), args[2].trim());
+				break;
+			case 4:
+				person = new Person(args[1].trim(), args[2].trim(),
+						args[3].trim());
+				break;
+			default:
+				person = new Person();
+			}
+			id++;
+			people.add(person);
+			peopleIds.add(id);
+			person.id = id;
+			gui.println("Created person #" + id + " - " + person.properString());
+			break;
+		case "delete":
+			if (args.length < 2 || args.length > 3) {
+				wrongArgs();
+				return;
+			}
+			int i = 0;
+			try {
+				i = Integer.parseInt(args[1]);
+			} catch (Exception e) {
+			}
+			if(i < 1 || i > id) {
+				gui.println("ERROR: Not a valid person id");
+				return;
+			}
+			int loc = peopleIds.indexOf(i);
+			if(loc == -1) {
+				gui.println("ERROR: Person no longer exists");
+				return;
+			}
+			person = people.get(loc);
+			gui.println("Person" + i + "deleted: " + person.properString());
+			break;
+		default:
+			gui.println("ERROR: Unknown Command");
+		}
+	}
+
+	private void wrongArgs() {
+		gui.println("ERROR: Wrong number of arguments");
+	}
+
+}

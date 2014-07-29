@@ -1,0 +1,98 @@
+package com.trickstertales.main;
+
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import com.trickstertales.tools.SmartScroller;
+
+public class MainGui extends JFrame {
+
+	private static final long serialVersionUID = 1L;
+	private Main main;
+	private JPanel contentPane;
+	private JTextArea console;
+	private JScrollPane consolePane;
+	private JTextField textField;
+
+	/**
+	 * Create the frame.
+	 */
+	public MainGui(Main main) {
+		this.main = main;
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		setTitle("Organizer");
+		
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(new BorderLayout(5, 5));
+
+		console = new JTextArea();
+		console.setEditable(false);
+		console.setWrapStyleWord(true);
+		console.setLineWrap(true);
+		console.setAutoscrolls(false);
+		console.setFont(new Font("Courier New", Font.PLAIN, 12));
+		console.setHighlighter(null);
+
+		consolePane = new JScrollPane(console,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		consolePane.getVerticalScrollBar().addAdjustmentListener(
+				new SmartScroller(consolePane));
+		contentPane.add(consolePane, BorderLayout.CENTER);
+
+		textField = new JTextField();
+		contentPane.add(textField, BorderLayout.SOUTH);
+		textField.setColumns(10);
+		textField.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textField.getText().equals(""))
+					return;
+				String msg = textField.getText();
+				textField.setText("");
+				int i = 0;
+				boolean text = false;
+				
+				if(text == false)
+					return;
+				getMain().execute(msg);
+				
+			}
+		});
+		textField.requestFocusInWindow();
+	}
+	
+	public Main getMain() {
+		return this.main;
+	}
+
+	public void print(Object obj) {
+		if (obj == null) {
+			print("null");
+			return;
+		}
+		String msg = obj.toString();
+		console.append(msg);
+	}
+
+	public void println(Object obj) {
+		if (obj == null) {
+			println("null");
+			return;
+		}
+		String msg = obj.toString();
+		console.append(msg + "\n");
+	}
+
+}

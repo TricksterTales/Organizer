@@ -1,0 +1,54 @@
+package com.trickstertales.main;
+
+import java.util.ArrayList;
+
+import com.trickstertales.types.Person;
+import com.trickstertales.utils.StringUtils;
+
+public class Main {
+
+	private MainGui gui;
+	private ArrayList<Person> people;
+	private int id = 0;
+
+	public static void main(String args[]) {
+		Main main = new Main();
+		main.start();
+	}
+
+	public Main() {
+		gui = new MainGui(this);
+		people = new ArrayList<Person>();
+	}
+
+	public void start() {
+		gui.setVisible(true);
+		gui.start();
+	}
+
+	public void execute(String cmd) {
+		if(cmd == null || cmd.equals(""))
+			return;
+		String args[] = StringUtils.parseArguments(cmd);
+		if(args.length == 0)
+			return;
+		
+		System.out.println("Executing: " + cmd);
+		
+		switch(args[0].toLowerCase()) {
+		case "print":
+			gui.println(args[1]);
+			break;
+		case "exit":
+			gui.dispose();
+			break;
+		case "create":
+			
+			gui.println("Created person #" + (id++));
+			break;
+		default:
+			gui.println("ERROR: Unknown Command");
+		}
+	}
+
+}

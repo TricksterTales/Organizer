@@ -1,0 +1,28 @@
+package com.trickstertales.main;
+
+import com.trickstertales.utils.StringUtils;
+
+public class Main {
+
+	private MainGui gui;
+
+	public static void main(String args[]) {
+		Main main = new Main();
+		main.start();
+	}
+
+	public Main() {
+		gui = new MainGui(this);
+	}
+
+	public void start() {
+		gui.setVisible(true);
+	}
+
+	public void execute(String cmd) {
+		gui.println(cmd);
+		String args[] = StringUtils.parseArguments(cmd);
+
+	}
+
+}

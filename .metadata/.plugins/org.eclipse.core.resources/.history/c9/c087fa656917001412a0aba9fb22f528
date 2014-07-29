@@ -1,0 +1,39 @@
+package com.trickstertales.main;
+
+import com.trickstertales.utils.StringUtils;
+
+public class Main {
+
+	private MainGui gui;
+
+	public static void main(String args[]) {
+		Main main = new Main();
+		main.start();
+	}
+
+	public Main() {
+		gui = new MainGui(this);
+	}
+
+	public void start() {
+		gui.setVisible(true);
+		gui.start();
+	}
+
+	public void execute(String cmd) {
+		if(cmd == null || cmd.equals(""))
+			return;
+		gui.println(cmd);
+		String args[] = StringUtils.parseArguments(cmd);
+		if(args.length == 0)
+			return;
+		switch(args[0].toLowerCase()) {
+		case "print":
+			gui.println(args[1]);
+			break;
+		default:
+			gui.println("ERROR: Unknown Command");
+		}
+	}
+
+}

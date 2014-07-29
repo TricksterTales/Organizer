@@ -1,0 +1,5 @@
+package com.trickstertales.types;
+
+public class Person {
+
+}
